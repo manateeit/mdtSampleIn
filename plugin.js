@@ -1,8 +1,8 @@
 /**
- * Plugin Quotes Controller
+ * Plugin SampleIn Controller
  */
-plugin.controller('quotesCntl', ['$scope', '$window', 'znData', '$routeParams', 'znModal','$templateCache', '$timeout', 'quotesCompanySvc', 'quotesDataShare','$location',
-        function ($scope, $window, znData, $routeParams, znModal,$templateCache, $timeout, quotesCompanySvc, quotesDataShare, $location) {
+plugin.controller('sampleinCntl', ['$scope', '$window', 'znData', '$routeParams', 'znModal','$templateCache', '$timeout', 'sampleinCompanySvc', 'sampleinDataShare','$location',
+        function ($scope, $window, znData, $routeParams, znModal,$templateCache, $timeout, sampleinCompanySvc, sampleinDataShare, $location) {
     // Current Workspace ID from Route
 
 
@@ -26,20 +26,20 @@ plugin.controller('quotesCntl', ['$scope', '$window', 'znData', '$routeParams', 
     $scope.varL = "location";
     $scope.contactlookup = {};
     $scope.locationlookup = {};
-    $scope.companyQuotes = [];
+    $scope.companySamplein = [];
     
-    $scope.showNewQuoteForm = 'false';
-    $scope.showQuotes = 'true';
+    $scope.showNewSampleInForm = 'false';
+    $scope.showSamplein = 'true';
     $scope.showCompanyInfo = 'false';
-    $scope.showNewQuoteForm = 'false';
-    $scope.showNewQuoteItem = 'false';
+    $scope.showNewSampleInForm = 'false';
+    $scope.showNewSampleInItem = 'false';
     $scope.showCompanyEdit = 'false';
     $scope.showDashboard = true;
     
-    $scope.quoteCnt = 0;
-    $scope.quoteItems = [];
-    $scope.quoteItem = {};
-    $scope.newQuote = {};
+    $scope.SampleInCnt = 0;
+    $scope.SampleInItems = [];
+    $scope.SampleInItem = {};
+    $scope.newSampleIn = {};
     var  itemsArry = [];
     
     $scope.todaysDate = function() {
@@ -58,10 +58,10 @@ plugin.controller('quotesCntl', ['$scope', '$window', 'znData', '$routeParams', 
             return today;
         };
 
-        // reset quoteItem
-        $scope.initializeCleanQuote = function (option) {
+        // reset SampleInItem
+        $scope.initializeCleanSampleIn = function (option) {
             if (option === 'set') {
-                $scope.newQuote = {
+                $scope.newSampleIn = {
                     date : $scope.todaysDate ,
                     number: '',
                     selectedContact: '',
@@ -74,18 +74,18 @@ plugin.controller('quotesCntl', ['$scope', '$window', 'znData', '$routeParams', 
 
                     comments: ''
                 };
-                $scope.quoteItems = [];
-                $scope.freshNewQuote = angular.copy($scope.newQuote);
+                $scope.SampleInItems = [];
+                $scope.freshNewSampleIn = angular.copy($scope.newSampleIn);
             }
             if (option === 'reset') {
-                $scope.newQuote = angular.copy($scope.freshNewQuote);
-                $scope.quoteItems.splice(0,$scope.quoteItems.length);
+                $scope.newSampleIn = angular.copy($scope.freshNewSampleIn);
+                $scope.SampleInItems.splice(0,$scope.SampleInItems.length);
             }
         };
         
-        $scope.initializeCleanQuoteItem = function (option) {
+        $scope.initializeCleanSampleInItem = function (option) {
             if (option === 'set') {
-                $scope.quoteItem = {
+                $scope.SampleInItem = {
                     itemNumber: '',
                     description: '',
                     mot: '',
@@ -108,15 +108,15 @@ plugin.controller('quotesCntl', ['$scope', '$window', 'znData', '$routeParams', 
                 };
 
                 $scope.carriers = [];
-                $scope.freshQuoteItem = angular.copy($scope.quoteItem);
+                $scope.freshSampleInItem = angular.copy($scope.SampleInItem);
             }
             if (option === 'reset') {
-                $scope.quoteItem = angular.copy($scope.freshQuoteItem);
+                $scope.SampleInItem = angular.copy($scope.freshSampleInItem);
             }
         };
     
-    $scope.initializeCleanQuoteItem('set');
-    $scope.initializeCleanQuote('set');
+    $scope.initializeCleanSampleInItem('set');
+    $scope.initializeCleanSampleIn('set');
     
    
     $scope.months = ["Jan","Feb","Mar","Apr","May", "Jun","Jul","Aug","Sep","Oct","Nov","Dec" ];
@@ -194,14 +194,14 @@ getSuppliersLists();
         ////onsole.log(companyIn);
         if (companyIn.id !== $scope.companyModel.id) {
             $scope.showCompanyInfo = "true";
-            $scope.showNewQuoteForm = 'false';
-            $scope.showNewQuoteForm = 'false';
-            $scope.showNewQuoteItem = 'false';
+            $scope.showNewSampleInForm = 'false';
+            $scope.showNewSampleInForm = 'false';
+            $scope.showNewSampleInItem = 'false';
             $scope.showCompanyEdit = 'false';
              $scope.showDashboard = false;
 
-            $scope.initializeCleanQuote('reset');
-            $scope.companyQuotes = [];
+            $scope.initializeCleanSampleIn('reset');
+            $scope.companySamplein = [];
             $scope.companyModel = angular.copy(companyIn);
          
 /* Create the list of Contacts with the Selected Company. */
@@ -243,9 +243,9 @@ getSuppliersLists();
                      
                 }
             };
-// Create a list of Quotes for this company 
+// Create a list of Samples In for this company 
 
-            $scope.reFreshQuotes(companyIn.id);
+            $scope.reFreshSamplesIn(companyIn.id);
    
         } // end of If check for same company clicked
 
@@ -253,11 +253,11 @@ getSuppliersLists();
 
     };  /* Close of set CompanyModel */
 
-    $scope.reFreshQuotes = function (id) {
-             $scope.companyQuotes = [];
-             quotesCompanySvc.childAdded(id,function(addedChild) {
+    $scope.reFreshSamplesIn = function (id) {
+            $scope.companySamplesin = [];
+             sampleinCompanySvc.childAdded(id,function(addedChild) {
                 $timeout(function() {
-                    $scope.companyQuotes.push(addedChild);
+                    $scope.companySamplesIn.push(addedChild);
                 });
             });
             
@@ -301,17 +301,17 @@ getSuppliersLists();
 
 
 
-//------------------------------------- New Quote  ------------------------------------------------------------------
+//------------------------------------- New SampleIn  ------------------------------------------------------------------
 
-    $scope.genQuoteNumber = function () { 
+    $scope.genSampleInNumber = function () { 
     
-        var quoteNumber  = new Date();
-        var dd = quoteNumber.getDate();
-        var mm = quoteNumber.getMonth()+1;//January is 0!
-        var yy = quoteNumber.getFullYear();
-        var hours = quoteNumber.getHours();
-        var minutes = quoteNumber.getMinutes();
-        var seconds = quoteNumber.getSeconds();
+        var SampleInNumber  = new Date();
+        var dd = SampleInNumber.getDate();
+        var mm = SampleInNumber.getMonth()+1;//January is 0!
+        var yy = SampleInNumber.getFullYear();
+        var hours = SampleInNumber.getHours();
+        var minutes = SampleInNumber.getMinutes();
+        var seconds = SampleInNumber.getSeconds();
             yy = yy.toString().substr(2,2);
         
         if(dd<10){
@@ -320,72 +320,72 @@ getSuppliersLists();
         if(mm<10){
             mm='0'+mm;
         }
-            quoteNumber  = 'MDT - ' + mm + dd + yy + ' - ' + hours + minutes + seconds;
-        return quoteNumber;
+            SampleInNumber  = 'MDT - ' + mm + dd + yy + ' - ' + hours + minutes + seconds;
+        return SampleInNumber;
         
     };
 
-    $scope.createCompanyNewQuote = function(currentCompany) {
+    $scope.createCompanyNewSampleIn= function(currentCompany) {
         $scope.showCompanyInfo = 'false';
-        $scope.showNewQuoteForm = 'true';
-        $scope.newQuote.date = $scope.todaysDate();
-        $scope.newQuote.number =  $scope.genQuoteNumber();
+        $scope.showNewSampleInForm = 'true';
+        $scope.newSampleIn.date = $scope.todaysDate();
+        $scope.newSampleIn.number =  $scope.genSampleIneNumber();
     };
      
      
-    $scope.newQuoteSave = function () {
+    $scope.newSampleinSave = function () {
          
-        $scope.showNewQuoteForm = 'false';
+        $scope.showNewSampleInForm = 'false';
         $scope.showCompanyInfo = 'true';
-        $scope.newQuote.number = $scope.newQuote.number.replace(/\s+/g, '');
-        $scope.newQuote.selectedContact  = angular.copy($scope.contactlookup[$scope.selectedContact]);
-        $scope.newQuote.selectedLocation = angular.copy($scope.locationlookup[$scope.selectedLocation]);
-        quotesCompanySvc.childSave($scope.companyModel, $scope.newQuote, $scope.quoteItems);
+        $scope.newSampleIn.number = $scope.newSampleIn.number.replace(/\s+/g, '');
+        $scope.newSampleIn.selectedContact  = angular.copy($scope.contactlookup[$scope.selectedContact]);
+        $scope.newSampleIn.selectedLocation = angular.copy($scope.locationlookup[$scope.selectedLocation]);
+        sampleinCompanySvc.childSave($scope.companyModel, $scope.newSampleIn, $scope.SampleInItems);
        
         setTimeout(function(){
-                $scope.reFreshQuotes($scope.companyModel.id);
+                $scope.reFreshSamplesIn($scope.companyModel.id);
              },100); 
      };
      
-    $scope.newQuoteCancel = function () {
+    $scope.newSampleInCancel = function () {
          
-        $scope.showNewQuoteForm = 'false';
+        $scope.showNewSampleInForm = 'false';
         $scope.showCompanyInfo = 'true';
-        $scope.initializeCleanQuote('reset');
+        $scope.initializeCleanSampleIn('reset');
     
          
      };
      
-    $scope.deleteCompanyQuote = function (item,row) {
+    $scope.deleteCompanySampleIn = function (item,row) {
             var companyId = $scope.companyModel.id + "/" + item;
         
-           quotesCompanySvc.childDelete(companyId);
+           sampleinCompanySvc.childDelete(companyId);
              setTimeout(function(){
-                $scope.reFreshQuotes($scope.companyModel.id);
+                $scope.reFreshSamplesIn($scope.companyModel.id);
              },100); 
             
         };
     
-    $scope.editCompanyQuote = function (item, row) { 
+    $scope.editCompanySampleIn = function (item, row) { 
         
-        quotesCompanySvc.childlookup($scope.companyModel.id,item,function(addedChild) {
+        sampleinCompanySvc.childlookup($scope.companyModel.id,item,function(addedChild) {
             $timeout(function() {
-                    $scope.newQuote = addedChild;
-                    $scope.selectedContact = $scope.newQuote.contact.id;
-                    $scope.selectedLocation = $scope.newQuote.location.id;
-                    $scope.quoteItems = $scope.newQuote.quoteItems;
-                    console.log($scope.newQuote);
+                    $scope.newSampleIn = addedChild;
+                    $scope.selectedContact = $scope.newSampleIn.contact.id;
+                    $scope.selectedLocation = $scope.newSampleIn.location.id;
+                    $scope.SampleInItems = $scope.newSampleIn.SampleInItems;
+
                 });
         });
 
         $scope.showCompanyInfo = 'false';
-        $scope.showNewQuoteForm = 'true';
+        $scope.showNewSampleInForm = 'true';
          
     };
 
-    $scope.downloadCompanyQuote = function (customerId,quoteId){
+    $scope.downloadCompanySampleIn = function (customerId,SampleInId){
 
-            var firehostURL = "https://mdtechapp.firebaseapp.com/index.html#/quote/" + customerId + "/" + quoteId + "/";
+            var firehostURL = "https://mdtechapp.firebaseapp.com/index.html#/samplein/" + customerId + "/" + SampleInId + "/";
             var myWindow = $window.open(firehostURL, "MsgWindow", "width=900, height=720", "true");
             myWindow.document.close();
             myWindow.focus();
@@ -396,61 +396,61 @@ getSuppliersLists();
     
 
 
-//------------------------------------- New Quote Item ----------------------------------------------------------------
+//------------------------------------- New SampleIn Item ----------------------------------------------------------------
 
-    $scope.newQuoteItem = function () {
-        $scope.showNewQuoteForm = 'false';
-        $scope.showNewQuoteItem = 'true';
-        $scope.quoteItemEdit = false;
-        $scope.quoteItem  = angular.copy($scope.freshQuoteItem);
+    $scope.newSampleInItem = function () {
+        $scope.showNewSampleInForm = 'false';
+        $scope.showNewSampleInItem = 'true';
+        $scope.SampleInItemEdit = false;
+        $scope.SampleInItem  = angular.copy($scope.freshSampleInItem);
         $scope.carriers = angular.copy([]); 
     };
 
-    $scope.newQuoteItemSave = function () { 
+    $scope.newSampleInItemSave = function () { 
     
-        $scope.showNewQuoteForm = 'true';
-        $scope.showNewQuoteItem = 'false';
+        $scope.showNewSampleInForm = 'true';
+        $scope.showNewSampleInItem = 'false';
         
-        var material = angular.copy($scope.newQuote.material);
-        $scope.newQuote.material = angular.copy(material);
+        var material = angular.copy($scope.newSampleIn.material);
+        $scope.newSampleIn.material = angular.copy(material);
         
     
-        if ($scope.quoteItemEdit)
+        if ($scope.SampleInItemEdit)
         {   
-            $scope.quoteItems[$scope.quoteItemEditRow] = $scope.quoteItem;
-            $scope.quoteItemEdit = false;
+            $scope.SampleInItems[$scope.SampleInItemEditRow] = $scope.SampleInItem;
+            $scope.SampleInItemEdit = false;
         }else {
-            $scope.quoteItems.push($scope.quoteItem);
+            $scope.SampleInItems.push($scope.SampleInItem);
         }
         
-        $scope.quoteItem = angular.copy($scope.freshQuoteItem);
+        $scope.SampleInItem = angular.copy($scope.freshSampleInItem);
       
     };
 
-    $scope.newQuoteItemCancel = function () { 
-        $scope.showNewQuoteForm = 'true';
-        $scope.showNewQuoteItem = 'false';
-        $scope.quoteItemCnt --;
+    $scope.newSampleInItemCancel = function () { 
+        $scope.showNewSampleInForm = 'true';
+        $scope.showNewSampleInItem = 'false';
+        $scope.SampleInItemCnt --;
      };
 
-    $scope.deleteQuoteItem = function (item) {$scope.quoteItems.splice(item,1);};
+    $scope.deleteSampleInItem = function (item) {$scope.SampleInItems.splice(item,1);};
     
     
-    $scope.editQuoteItem = function(item) {
-        $scope.quoteItem = angular.copy($scope.quoteItems[item]);
-        $scope.quoteItemEdit = true;
-        $scope.quoteItemEditRow = item;
-        $scope.showNewQuoteForm = 'false';
-        $scope.showNewQuoteItem = 'true';
+    $scope.editSampleInItem = function(item) {
+        $scope.SampleInItem = angular.copy($scope.SampleInItems[item]);
+        $scope.SampleInItemEdit = true;
+        $scope.SampleInItemEditRow = item;
+        $scope.showNewSampleInForm = 'false';
+        $scope.showNewSampleInItem = 'true';
     };
   
     $scope.calculatePackaging = function () {
         
-      var motValue  = Number($scope.quoteItem.mot.value);
-      var packCost =  Number($scope.quoteItem.packagingCost);
+      var motValue  = Number($scope.SampleInItem.mot.value);
+      var packCost =  Number($scope.SampleInItem.packagingCost);
       var packaging = packCost/motValue;
       
-      $scope.quoteItem.packaging = packaging.toFixed(5);
+      $scope.SampleInItem.packaging = packaging.toFixed(5);
         
         
     };
@@ -460,9 +460,9 @@ getSuppliersLists();
     $scope.calculateColorCon = function () {
 
          
-         var colorConCost = Number($scope.quoteItem.colorConCost);
-         var colorConLetDown = Number($scope.quoteItem.colorConLetDown);
-         var motValue  = Number($scope.quoteItem.mot.value);
+         var colorConCost = Number($scope.SampleInItem.colorConCost);
+         var colorConLetDown = Number($scope.SampleInItem.colorConLetDown);
+         var motValue  = Number($scope.SampleInItem.mot.value);
          
          if (colorConLetDown === null) {colorConLetDown = 0}
          if (colorConCost === null) {colorConCost = 0}
@@ -471,21 +471,14 @@ getSuppliersLists();
          var colorCon = colorConCost/bottom;
          
          if (isNaN(colorCon)) { colorCon = 0 }
-         
-         
-         //onsole.log("Color Con Cost: " + $scope.quoteItem.colorConCost );
-         //onsole.log("color let down: " +  $scope.quoteItem.colorConLetDown );
-         //onsole.log("mot value: " + $scope.quoteItem.mot.value);
-    
-         //onsole.log(colorCon.toFixed(5));
-         $scope.quoteItem.colorCon =   colorCon.toFixed(5);
+                  $scope.SampleInItem.colorCon =   colorCon.toFixed(5);
      };    
             
 
 
     $scope.getLanes = function() {
         //onsole.log("Getting Lanes");
-       var params = { workspaceId:3482, formId: 10318, field91846: $scope.quoteItem.mot.name, limit: 10000};
+       var params = { workspaceId:3482, formId: 10318, field91846: $scope.SampleInItem.mot.name, limit: 10000};
        znData('FormRecords').get(params, function (records) {$scope.frieghtOffers = records; });
     };
 
@@ -501,7 +494,7 @@ getSuppliersLists();
                     tempObj = { 'id' : 'field' + records[index].id, 'name' : records[index].label} ;
                     myarr.push(tempObj);
                 }
-            var formparams2 = { workspaceId:3482, formId: 10318, id: $scope.quoteItem.lane.id, limit: 10};
+            var formparams2 = { workspaceId:3482, formId: 10318, id: $scope.SampleInItem.lane.id, limit: 10};
              znData('FormRecords').get(formparams2, function (records) {
              var tempObj ={};
              var tempfield = null;
@@ -526,20 +519,20 @@ getSuppliersLists();
     };
     
     $scope.calculateTransport = function () {
-         var transportation = parseInt($scope.quoteItem.carrier.value) / parseInt($scope.quoteItem.mot.value);
-         $scope.quoteItem.transportation =   transportation.toFixed(5);
+         var transportation = parseInt($scope.SampleInItem.carrier.value) / parseInt($scope.SampleInItem.mot.value);
+         $scope.SampleInItem.transportation =   transportation.toFixed(5);
      };
 
     $scope.calculateTotal = function ()  { 
-            var  supplier = Number($scope.quoteItem.supplier);
-            var  colorCon =  Number($scope.quoteItem.colorCon);
-            var  transportation =  Number($scope.quoteItem.transportation);
-            var  packaging =  Number($scope.quoteItem.packaging);
-            var  warehousing =  Number($scope.quoteItem.warehousing);
-            var  tollprocessing =  Number($scope.quoteItem.tollprocessing);
-            var  repCost  =  Number($scope.quoteItem.repCost);            
+            var  supplier = Number($scope.SampleInItem.supplier);
+            var  colorCon =  Number($scope.SampleInItem.colorCon);
+            var  transportation =  Number($scope.SampleInItem.transportation);
+            var  packaging =  Number($scope.SampleInItem.packaging);
+            var  warehousing =  Number($scope.SampleInItem.warehousing);
+            var  tollprocessing =  Number($scope.SampleInItem.tollprocessing);
+            var  repCost  =  Number($scope.SampleInItem.repCost);            
             var  total =  supplier + colorCon + transportation + packaging + warehousing + tollprocessing + repCost;
-        $scope.quoteItem.total = total.toFixed(5);
+        $scope.SampleInItem.total = total.toFixed(5);
     };
  
  
@@ -656,66 +649,65 @@ getSuppliersLists();
         
     };
 
-           $scope.allQuotes = [];
-             quotesCompanySvc.queryAll(function(addedChild) {
+           $scope.allSamplesin = [];
+             sampleinCompanySvc.queryAll(function(addedChild) {
                 $timeout(function() {
-                    $scope.allQuotes.push(addedChild);
-                    ////onsole.log($scope.allQuotes);
+                    $scope.allSamplesin.push(addedChild);
                 });
             });
         
 }])
 /*
 *
-//------------------------------------- New Quote CNTL ----------------------------------------------------------------
+//------------------------------------- New SampleIn CNTL ----------------------------------------------------------------
 *
 */
-.controller('quotesDashboardCntl', ['$scope', 'quotesCompanySvc', function ($scope, quotesCompanySvc) {
+.controller('sampleinsDashboardCntl', ['$scope', 'sampleinCompanySvc', function ($scope, sampleinCompanySvc) {
         
 
         
 }])
 /*
 *
-//------------------------------------- quotes Data ServiceL ----------------------------------------------------------------
+//------------------------------------- SampleIn Data ServiceL ----------------------------------------------------------------
 *
 */
-.service('quotesDataShare', [ function () {  
+.service('sampleinDataShare', [ function () {  
     this.companyIn = '';
     
 }])
-.service('quotesCompanySvc', ['quotesDataShare', function(quotesDataShare) {  
+.service('sampleinCompanySvc', ['sampleinDataShare', function(sampleinDataShare) {  
             return {
                 childAdded: function childAdded(id,cb) {
-                    var fbUrl = 'https://mdtquotes.firebaseio.com/' + id;
+                    var fbUrl = 'https://mdtsamplein.firebaseio.com/' + id;
                     var companyRef = new Firebase(fbUrl);
                     companyRef.on('child_added', function (snapshot) {
                         cb.call(this, snapshot.val());
                     });
                 },
                 childDelete: function childDelete(childDeleteId) {
-                    var fbUrl = 'https://mdtquotes.firebaseio.com/' + childDeleteId ;
+                    var fbUrl = 'https://mdtsamplein.firebaseio.com/' + childDeleteId ;
                     var companyRef = new Firebase(fbUrl);
                     companyRef.remove();
                 },
-                childSave: function childSave(companyModel, newQuote, quoteItems) {
-                    var fbUrl = 'https://mdtquotes.firebaseio.com/' + companyModel.id + '/';
+                childSave: function childSave(companyModel, newSampleIn, SampleInItems) {
+                    var fbUrl = 'https://mdtsamplein.firebaseio.com/' + companyModel.id + '/';
                     var companyRef = new Firebase(fbUrl);
                     
                     
                     var recordObj = {
-                            date: newQuote.date,
-                            number: newQuote.number,
+                            date: newSampleIn.date,
+                            number: newSampleIn.number,
                             company : companyModel,
-                            contact : newQuote.selectedContact,
-                            location :newQuote.selectedLocation,
-                            term : newQuote.term,
-                            shipMonth : newQuote.shipmonth,
-                            shipYear: newQuote.shipyear,
-                            shipVia: newQuote.shipvia,
-                            FOB: newQuote.FOB,
-                            quoteItems : quoteItems,
-                            comments: newQuote.comments
+                            contact : newSampleIn.selectedContact,
+                            location :newSampleIn.selectedLocation,
+                            term : newSampleIn.term,
+                            shipMonth : newSampleIn.shipmonth,
+                            shipYear: newSampleIn.shipyear,
+                            shipVia: newSampleIn.shipvia,
+                            FOB: newSampleIn.FOB,
+                            SampleInItems : SampleInItems,
+                            comments: newSampleIn.comments
                     };
                     
                     var objArry = Object.keys(recordObj);
@@ -723,17 +715,17 @@ getSuppliersLists();
                     {
                      if (typeof recordObj[objArry[i]] === 'undefined') { recordObj[objArry[i]] = "" }   
                     }
-                    companyRef.child(newQuote.number).set(recordObj);  
+                    companyRef.child(newSampleIn.number).set(recordObj);  
                 },
             childlookup: function childlookup (id,recordid,cb) {
-                    var fbUrl = 'https://mdtquotes.firebaseio.com/' + id + "/" + recordid;
+                    var fbUrl = 'https://mdtsamplein.firebaseio.com/' + id + "/" + recordid;
                     var companyRef = new Firebase(fbUrl);
                     companyRef.on('value', function (snapshot) {
                         cb.call(this, snapshot.val());
                     });
                 },
             queryAll: function queryAll(id,cb) {
-                    var fbUrl = 'https://mdtquotes.firebaseio.com/';
+                    var fbUrl = 'https://mdtsamplein.firebaseio.com/';
                     var companyRef = new Firebase(fbUrl);
                     companyRef.on('child_added', function (snapshot) {
                         cb.call(this, snapshot.val());
@@ -745,15 +737,15 @@ getSuppliersLists();
 /**
  * Plugin Registration
  */
-    .register('quotes', {
-        route: '/quotes',
-        controller: 'quotesCntl',
-        template: 'quotes-main',
-        title: 'MDT Quotes',
-        pageTitle: false,
-        fullPage: true,
-        topNav: true,
-        order: 300,
-        icon: 'icon-truck'
-    });
+.register('samplein', {
+	route: '/samplein',
+	controller: 'sampleinCntl',
+	template: 'samplein-main',
+	title: 'samplein Plugin',
+	pageTitle: false,
+	type: 'fullPage',
+	topNav: true,
+	order: 300,
+	icon: 'icon-puzzle'
+});
 
