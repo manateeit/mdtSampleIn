@@ -1,0 +1,141 @@
+body, html, .row-offcanvas {
+    height: 100%;
+}
+
+body {
+    padding-top: 50px;
+}
+
+pre {
+display: block;
+margin: 0;
+padding: 5px;
+font-size: 11px;
+color: #333;
+word-break: break-all;
+word-wrap: break-word;
+background-color: transparent  !important;
+border: 0px solid transparent  !important;
+border-radius: 0;
+}
+
+.textCenter {
+    text-align: center;
+}
+
+.scrollit {
+    overflow:scroll;
+    height:100px;
+}
+
+.companyEditPanel{
+    background-color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    box-shadow: 10px 10px 5px #888888;
+    border: 2px solid #888888;
+    border-radius: 25px;
+    position: absolute;
+    margin-left: 210px;
+    width: 40%;  
+    
+}
+.quoteqorkarea {
+    background-color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    box-shadow: 10px 10px 5px #888888;
+    border: 2px solid #888888;
+    border-radius: 25px;
+    position: absolute;
+    margin-left: 210px;
+    width: 60%;
+}
+
+/* centered columns styles */
+.row-centered {
+    text-align: center;
+}
+
+.col-centered {
+    display: inline-block;
+    float: none;
+    /* reset the text-align */
+    text-align: left;
+    /* inline-block space fix */
+    margin-right: -4px;
+}
+
+.selected td {
+    background-color: #3a7297 !important;
+}
+
+.modal-body {
+    height: 80% !important;
+}
+
+.wide-modal {
+    width: 80% !important;
+    margin-left: 10% !important;
+    left: 0 !important;
+    height: 80% !important;
+}
+
+#sidebar {
+    width: inherit;
+    min-width: 220px;
+    max-width: 220px;
+    background-color: #f5f5f5;
+    float: left;
+    height: 100%;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#main {
+    height: 100%;
+    overflow: auto;
+}
+
+/*
+ * off Canvas sidebar
+ * --------------------------------------------------
+ */
+@media screen and (max-width: 768px) {
+    .row-offcanvas {
+        position: relative;
+        -webkit-o-transition: all 0.25s ease-out;
+        -moz--o-transition: all 0.25s ease-out;
+        transition: all 0.25s ease-out;
+        width: calc(100% + 220px);
+    }
+
+    .row-offcanvas-left {
+        left: -220px;
+    }
+
+    .row-offcanvas-left.active {
+        left: 0;
+    }
+
+    .sidebar-offcanvas {
+        position: absolute;
+        top: 0;
+    }
+}
+
+.fixedHeight205 {
+    height: 205px;
+}
+
+.big-icon {
+    font-size: 22px;
+
+}
+
+.md-icon {
+    font-size: 16px;
+
+}
+
