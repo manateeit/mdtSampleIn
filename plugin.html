@@ -1,5 +1,5 @@
 
-<script type="text/ng-template" id="quotes-main">
+<script type="text/ng-template" id="samplein-main">
     
   
 
@@ -8,21 +8,21 @@
     
 
         <div id="sidebar" class="sidebar-offcanvas">
-           <div ng-include="'quotestplsidebar.html'"></div>
+           <div ng-include="'sampleintplsidebar.html'"></div>
         </div>
         
           <div id="pageTitle"> <h2>Customer Quotes</h2> <p> {{quoteSearch.number}} </div>
 
         <div ng-show="showCompanyInfo"  class="quoteqorkarea" >
-            <div ng-include="'quotestplcompanyinfo.html'"></div>
+            <div ng-include="'sampleintplcompanyinfo.html'"></div>
         </div>
     
-        <div ng-show="showNewQuoteForm" class="quoteqorkarea" class="container"  > 
-            <div ng-include="'quotestplnewquote.html'"></div>
+        <div ng-show="showNewSampleInForm" class="quoteqorkarea" class="container"  > 
+            <div ng-include="'sampleintplnewquote.html'"></div>
         </div>
     
-        <div ng-show="showNewQuoteItem" class="quoteqorkarea" class="container"  >
-            <div ng-include="'quotestplnewitem.html'"></div>
+        <div ng-show="showNewSampleInItem" class="quoteqorkarea" class="container"  >
+            <div ng-include="'sampleintplnewitem.html'"></div>
         </div>
         
 
@@ -32,8 +32,8 @@
     
 </script>
 
-<!-- SIDEBARE TEMPLATE -------------quotestplsidebar.html --------------------------------------------------------------------------------------------------------->
-<script type="text/ng-template" id="quotestplsidebar.html">
+<!-- SIDEBARE TEMPLATE -------------sampleintplsidebar.html --------------------------------------------------------------------------------------------------------->
+<script type="text/ng-template" id="ampleintplsidebar.html">
     
      <div style="margin-bottom: 10px;" >
             <input type="text"  ng-model="searchCompany.name" placeholder="Search here..." class="">
@@ -51,8 +51,8 @@
     
 </script>
 
-<!-- COMPANY INFORMATION TEMPLATE --quotestplcompanyinfo.html---------------------------------------------------------------------------------------------------------->
-<script type="text/ng-template" id="quotestplcompanyinfo.html">
+<!-- COMPANY INFORMATION TEMPLATE --sampleintplcompanyinfo.html---------------------------------------------------------------------------------------------------------->
+<script type="text/ng-template" id="sampleintplcompanyinfo.html">
     
                <div class="col-md-12">
                 <div class="col-md-6">
@@ -163,7 +163,7 @@
 
 <!--  NEW QUOTE TEMPLATE -----------quotestplnewquote.html----------------------------------------------------------------------------------------------------------->
 
-<script type="text/ng-template" id="quotestplnewquote.html">
+<script type="text/ng-template" id="sampleinstplnewquote.html">
 
  <div class="col-md-12">
 <form class="form-horizontal">
@@ -360,9 +360,9 @@
 </div>
 </script>
 
-<!--  NEW QUOTE ITEM TEMPLATE ------quotestplnewitem.html----------------------------------------------------------------------------------------------------------->
+<!--  NEW QUOTE ITEM TEMPLATE ------sampleintplnewitem.html----------------------------------------------------------------------------------------------------------->
 
-<script type="text/ng-template" id="quotestplnewitem.html">
+<script type="text/ng-template" id="sampleintplnewitem.html">
 
         <div class="col-md-6">
         
