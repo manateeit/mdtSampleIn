@@ -1,0 +1,537 @@
+
+<script type="text/ng-template" id="quotes-main">
+    
+  
+
+
+    <div id="mainscreen" class="row-offcanvas row-offcanvas-left">
+    
+
+        <div id="sidebar" class="sidebar-offcanvas">
+           <div ng-include="'quotestplsidebar.html'"></div>
+        </div>
+        
+          <div id="pageTitle"> <h2>Customer Quotes</h2> <p> {{quoteSearch.number}} </div>
+
+        <div ng-show="showCompanyInfo"  class="quoteqorkarea" >
+            <div ng-include="'quotestplcompanyinfo.html'"></div>
+        </div>
+    
+        <div ng-show="showNewQuoteForm" class="quoteqorkarea" class="container"  > 
+            <div ng-include="'quotestplnewquote.html'"></div>
+        </div>
+    
+        <div ng-show="showNewQuoteItem" class="quoteqorkarea" class="container"  >
+            <div ng-include="'quotestplnewitem.html'"></div>
+        </div>
+        
+
+    
+    </div> 
+
+    
+</script>
+
+<!-- SIDEBARE TEMPLATE -------------quotestplsidebar.html --------------------------------------------------------------------------------------------------------->
+<script type="text/ng-template" id="quotestplsidebar.html">
+    
+     <div style="margin-bottom: 10px;" >
+            <input type="text"  ng-model="searchCompany.name" placeholder="Search here..." class="">
+            <button type="submit" class="tip-right"  ><i class="icon-search"></i></button>
+            <br />
+            <!-- Delete Freight Records,  this should be commented out. -->
+        <!--  <button class="tip-right btn" ng-click="deleteFreight()">Delete Freight Records</button> -->
+        </div>
+        <div class="col-md-12">
+            <h3>Companies</h3>
+            <ul class="nav">
+                <li class="isActive(company.name)" ng-repeat="company in companies | filter:searchCompany" ><a href="#" ng-click="setCompanyModel(company)">{{company.name}}</a></li>
+            </ul>
+        </div>
+    
+</script>
+
+<!-- COMPANY INFORMATION TEMPLATE --quotestplcompanyinfo.html---------------------------------------------------------------------------------------------------------->
+<script type="text/ng-template" id="quotestplcompanyinfo.html">
+    
+               <div class="col-md-12">
+                <div class="col-md-6">
+                    <div  class="info-box">
+                        <header>
+                            <h3>Company Contact Information</h3>
+                      
+                         <span style="margin-left:10px;" class="info-box-actions">
+                          <i   tooltip="Refresh" ng-click="refreshCompanyData(companyModel)" class="icon-arrows-cw"></i>
+                          </span>
+                           <span class="info-box-actions">
+				           <i   tooltip="Edit"  ng-click="editCompanyInfo()" class="icon-edit"></i>
+			            </span>
+			              </header>
+                        <div class="info-box-body fixedHeight205">
+                            <div style="margin-left:10px;">
+                                <h2>{{companyModel.name}}</h2>
+                                <p><b>MDT Compnay ID:</b> {{companyModel.id}}</p>
+                                <p><b>Website: </b>{{companyModel.field71091}}</p>
+                                <p><b>Phone: </b> {{companyModel.field84492}}</p>
+                                <p><b>Fax: </b> {{companyModel.field84493}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-6">
+                    <div class="info-box">
+                        <header>
+                            <h3>Billing Address</h3>
+                        <span style="margin-left:10px;" class="info-box-actions">
+                            <i  tooltip="Refresh" ng-click="refreshCompanyData(companyModel)" class="icon-arrows-cw"></i>
+                        </span>
+                        <span style="margin-left:10px;" class="info-box-actions">
+                            <i tooltip="Edit"  ng-click="editCompanyBilling()" class="icon-edit"></i>
+			            </span>			            
+                        </header>
+                        <div class="info-box-body fixedHeight205">
+                            <div ng-show="isCompanyAddress(companyModel.field83251)"style="margin-left:10px;">
+                                <p>{{companyModel.field83251}}</p>
+                                <p>{{companyModel.field83253}} , {{companyModel.field83254}}  {{companyModel.field83255}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+        <div ng-show="showQuotes" style="margin-top:10px;" class="col-lg-12">
+            <header>
+                <h3>Quote List for {{ companyModel.name }}</h3>
+            </header>
+
+            <div style="margin-bottom: 10px;" >
+                <div class="col-md-6">
+                    <input type="text" tooltip="Search by MDT Quote Number"  ng-model="quoteSearch.number" placeholder="Search here..." class="">
+                    <i style="font-size:19px;" class="icon-search"></i>
+                </div>
+                <div style="text-align:right;" class="col-md-6">
+                    <button class="btn btn-lg"  tooltip="Create a New Quote" ng-click="createCompanyNewQuote(companyModel)">New Quote</button>
+                     <button class="btn btn-lg" tooltip="Refresh Quotes" ng-click="reFreshQuotes(companyModel.id)">Refresh</button>
+                    
+                </div>
+
+            </div>
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th> <a href="#" ng-click="orderByField='number'; reverseSort = !reverseSort">
+                         MDT Quote <span ng-show="orderByField == 'number'"><span ng-show="!reverseSort"><i class="icon-up-big"></i></span><span ng-show="reverseSort"><i class="icon-down-big"></i></span></span></a></th>
+                    <th><a href="#" ng-click="orderByField='date'; reverseSort = !reverseSort">
+                         Date <span ng-show="orderByField == 'date'"><span ng-show="!reverseSort"><i class="icon-up-big"></i></span><span ng-show="reverseSort"><i class="icon-down-big"></i></span></span></a></th>
+                    <th><a href="#" ng-click="orderByField='location.name'; reverseSort = !reverseSort">
+                         Location <span ng-show="orderByField == 'location.name'"><span ng-show="!reverseSort"><i class="icon-up-big"></i></span><span ng-show="reverseSort"><i class="icon-down-big"></i></span></span></a></th></th>
+                    <th><a href="#" ng-click="orderByField='contact.name'; reverseSort = !reverseSort">
+                         Contact <span ng-show="orderByField == 'contact.name'"><span ng-show="!reverseSort"><i class="icon-up-big"></i></span><span ng-show="reverseSort"><i class="icon-down-big"></i></span></span></a></th></th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                
+                <tbody>
+               
+                <tr ng-repeat="companyQuote in companyQuotes | filter:quoteSearch | orderBy:orderByField:reverseSort " >
+                    <td>{{companyQuote.number}}</td>
+                    <td>{{companyQuote.date}}</td>
+                    <td>{{companyQuote.location.name}}</td>
+                    <td>{{companyQuote.contact.name}}</td>
+                    <td>
+                        <i tooltip="Edit Quote" ng-click="editCompanyQuote(companyQuote.number,$index)" class="icon-edit md-icon"></i></a>
+                       <!-- <i style="margin-left:8px;" tooltip="Email Quote" class="icon-mail md-icon"></i></a> -->
+                        <i style="margin-left:8px;" ng-click="downloadCompanyQuote(companyModel.id, companyQuote.number)" tooltip="Download Quote" class="icon-file-pdf md-icon"></i></a>
+                        <i style="margin-left:8px; font-size:16px; color: red;" tooltip="Delete Quote" ng-click="deleteCompanyQuote(companyQuote.number,$index)" class="icon-trash"></i>
+                    </td>
+                </tr>
+               
+                </tbody>
+
+            </table>
+                <pager items-per-page="quotePerPage" total-items="totalQuotes" ng-model="companyQuotes"  ng-change="pageChanged()"> helow World</pager>
+        </div>
+    </div>
+
+    
+    
+    
+</script>
+
+<!--  NEW QUOTE TEMPLATE -----------quotestplnewquote.html----------------------------------------------------------------------------------------------------------->
+
+<script type="text/ng-template" id="quotestplnewquote.html">
+
+ <div class="col-md-12">
+<form class="form-horizontal">
+    <fieldset>
+        <legend>New Quote For {{companyModel.name}}</legend>
+         
+                     <!--  Date and Quote no. -->
+            <div  class="row row-centered">
+                <div class="col-md-6" style="margin-top:10px;"></div>
+                <div class="col-md-6" style="margin-top:10px;">
+                    <div class="col-md-6 col-centered">
+                        <div class="input-group input-group-sm">
+                            Date <input ngPattern=" ^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d$" type="text" class="form-control" ng-model="newQuote.date">
+                        </div>
+                    </div>
+            
+                    <div class="col-md-6 col-centered">
+                        <div class="input-group input-group-sm">
+                            MDT Quote No. <input readonly type="text" ng-model="newQuote.number" class="form-control" placeholder="MDT-XXXXXXX">
+                        </div>
+                    </div>
+                </div>
+            </div>  
+
+            <!-- New Quote Contact Person and Shipping Address Row -->
+            <div class="row row-centered">
+            
+                <!-- Contact Person for New Quote -->
+                <div class="col-md-6" style="margin-top:10px;">
+                    <div class="info-box">
+                        <header>
+                            <h3>Company Contact</h3>
+                                <span style="margin-left:10px;" class="info-box-actions">
+                                    <i   tooltip="Refresh" ng-click="refreshContactData(companyModel)" class="icon-arrows-cw"></i>
+                                </span>
+                                <span class="info-box-actions">
+        				            <i   tooltip="Create New Contact"  ng-click="crContactData()" class="icon-plus"></i>
+			                    </span>
+            			            
+            			            
+                        </header>
+                        <div class="info-box-body fixedHeight205">
+                            <div style="margin-left:10px; min-height: 150px;">
+                                <table class="table table-condensed ">
+                                    <thead>
+                                    <tr>
+                                        <th>First</th>
+                                        <th>Last</th>
+                                        <th>eMail</th>
+                                        <th>id</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr  tooltip="click to select this Contact"  ng-repeat="contact in companyContacts" ng-click="selectContact(contact.id)"
+                                        style="{{getClassContact(contact.id" }}
+                                    ">
+                                    <td style="{{getClassContact(contact.id)}}">{{contact.field71094}}</td>
+                                    <td style="{{getClassContact(contact.id)}}">{{contact.field71095}}</td>
+                                    <td style="{{getClassContact(contact.id)}}">{{contact.field71139}}</td>
+                                    <td style="{{getClassContact(contact.id)}}">{{contact.id}}</td>
+                                    <td style="{{getClassContact(contact.id)}}"><i   tooltip="Edit Location"  ng-click="editContactData(contact.id)" class="icon-edit"></i></td>
+                                    </tr>
+            
+                                    </tbody>
+            
+                                </table>
+            
+            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Shpping Address for New Quote-->
+                <div class="col-md-6" style="margin-top:10px; ">
+                    <div class="info-box">
+                        <header>
+                            <h3>Shipping Address</h3>
+                                <span style="margin-left:10px;" class="info-box-actions">
+                                    <i   tooltip="Refresh" ng-click="refreshLocationData(companyIn)" class="icon-arrows-cw"></i>
+                                </span>
+                                <span class="info-box-actions">
+        				            <i   tooltip="Create New Location"  ng-click="createLocationData()" class="icon-plus"></i>
+			                    </span>
+                        </header>
+                        <div class="info-box-body fixedHeight205">
+                            <table class="table table-condensed">
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Address</th>
+                                    <th>City</th>
+                                    <th>id</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr tooltip="click to select this Location" ng-repeat="location in companyLocations" ng-click="selectLocation(location.id)"
+                                    style="{{ getClassLocation(location.id,varL) }}">
+                                    <td style="{{ getClassLocation(location.id,varL)}}">{{location.name}}</td>
+                                    <td style="{{ getClassLocation(location.id,varL) }}">{{location.field71145}}</td>
+                                    <td style="{{ getClassLocation(location.id,varL) }}">{{location.field71147}}</td>
+                                    <td style="{{ getClassLocation(location.id,varL) }}">{{location.id}}</td>
+                                    <td style="{{ getClassLocation(location.id,varL) }}"><i   tooltip="Edit Location"  ng-click="editLocationData(location.id)" class="icon-edit"></i></td>
+                                </tr>
+            
+                                </tbody>
+            
+                            </table>
+            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Terms Ship Month Ship and FOB --->
+            <div class="row">
+                <div class="col-md-3"> </div>
+                <div class="col-md-9" style="margin-top:10px;">
+                    <table class="table table-condensed table-striped table-hover">
+                        <thead>
+                        <tr class="row-centered" >
+                            <th style="width: 20%"  class="row-centered">Terms</th>
+                            <th style="width: 15%"  class="row-centered">Ship Month</th>
+                            <th style="width: 15%"  class="row-centered">Ship Year </th>
+                            <th style="width: 15%"  class="row-centered">Ship Via</th>
+                            <th style="width: 35%"  class="row-centered">FOB</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><select ng-options="term for term in terms" ng-model="newQuote.term" class="form-control" > </select></td>
+                            <td><select ng-options="month for month in months" class="form-control" ng-model="newQuote.shipmonth"> </select></td>
+                            <td><select ng-options="year for year in years"  class="form-control" ng-model="newQuote.shipyear"> </select> </td>
+                            <td><select ng-options="item for item in shipviaoptions" class="form-control" ng-model="newQuote.shipvia">  </select></td>
+                            <td><input type="text" class="form-control" ng-model="newQuote.FOB"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+<div class=row style="padding-top: 5px; padding-bottom: 5px;">
+<div class="col-md-12" style="text-align:right;"><button class="btn" ng-click="newQuoteItem()"> New Item </button> </div>
+</div>
+
+            <!-- Quotes Table in New Quote -->
+            <div class="info-box-body">
+                <table class="table table-condensed table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Packaging Type</th>
+                        <th>Quanity</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in quoteItems track by $index" >
+                        <td>{{item.itemNumber}}</td>
+                        <td><pre>{{item.description}}</pre></td>
+                        <td>{{item.total | currency }}</td>
+                        <td>{{item.packagingType.name}}</td>
+                        <td>{{item.mot.name}} - {{item.mot.desc}}</td>
+                        <td><i ng-click="editQuoteItem($index)" class="icon-edit"></i> <i style="padding-left:10px;" ng-click="deleteQuoteItem($index)" class="icon-trash"></i> </td>
+                    </tr>
+            
+                    </tbody>
+            
+                </table>
+            
+            </div>
+
+    <!-- Comments Sections of New Quote -->
+    <div style="padding-top: 30px;" class="panel">
+      <h4>Comments:</h4>
+      <textarea style="width: 100%; height: 100px;" class="form-control" ng-model="newQuote.comments"></textarea>
+    </div>        
+                            
+        </fieldset>
+    </form>    
+
+    
+    <div class=row style="padding-top: 30px; padding-bottom: 10px;">
+        <div class="col-md-12 col-md-offset-10" >
+            <button class="btn btn-lg" ng-click="newQuoteSave()"> Save </button> 
+            <button class="btn btn-lg" ng-click="newQuoteCancel()"> Cancel </button>
+        </div>
+    </div>
+</div>
+</script>
+
+<!--  NEW QUOTE ITEM TEMPLATE ------quotestplnewitem.html----------------------------------------------------------------------------------------------------------->
+
+<script type="text/ng-template" id="quotestplnewitem.html">
+
+        <div class="col-md-6">
+        
+                <table class="table table-condensed table-striped table-hover">
+                    <tbody>
+                            <tr>
+                                <td>Material:</td>
+                                <td> <select ng-options="material.field83297 + ' - ' + material.field83298 + ' - ' + material.field83299 for material in materials" ng-model="quoteItem.material" class="form-control" > </select></td>
+                            </tr>
+                                                                 
+  
+                            
+                    </tbody>
+
+                </table>
+        
+        </div>
+        
+        <div class="col-md-6">
+            <table class="table table-condensed table-striped table-hover">
+                    <tbody>
+                                <td>Description: </td>
+                                <td><textarea class="form-control" ng-model="quoteItem.description"></textarea></td>
+                            </tr>
+                                                                        
+  
+                            
+                    </tbody>
+            </table>
+        </div>
+<div class="col-md-12">
+        <h3> Detail Calculations</h3>
+        <div class="col-md-4">  
+                <h4>Transporation</h4>
+                <table class="table table-condensed table-striped table-hover">
+                    <tbody>
+                    <tr>
+                            <tr>
+                                <td>Mode Of Transport</td>
+                                <td><select ng-options="mot.name for mot in modeOfTransport" ng-change="getLanes()"  class="form-control" ng-model="quoteItem.mot">  </select></td>
+                            </tr>
+                            <tr>
+                                <td>Lane</td>
+                                <td><select ng-disabled="!quoteItem.mot" ng-change="getCarriers()" ng-options="lane.name for lane in frieghtOffers | orderBy:'name'" class="form-control" ng-model="quoteItem.lane">  </select></td>
+                            </tr>                            
+                            <tr>
+                                <td>Carrier</td>
+                                <td><select ng-disabled="!quoteItem.lane" ng-change="calculateTransport(); calculateTotal()" ng-options="carrier.unit + carrier.value + ' on  ' + carrier.key for carrier in carriers | orderBy:'value':reverse" class="form-control" ng-model="quoteItem.carrier">  </select></td>
+                            </tr>  
+                    
+                    </tr>
+                    
+                    </tbody>
+                </table>
+       
+        </div>
+       
+        
+        <div class="col-md-4">  
+                <h4>Color Concentrate</h4>
+                <table class="table table-condensed table-striped table-hover">
+                    <tbody>
+                    <tr>
+                            <td>Supplier</td>
+                                <td><select   ng-disabled="!quoteItem.mot"  ng-options="cc.name for cc in colorSuppliers"  class="form-control" ng-model="quoteItem.colorSupplier" >  </select></td>
+                            </tr>
+                            <tr>
+                                <td>Color Concentrate Let Down</td>
+                                <td><input type="text"  ng-disabled="!quoteItem.colorSupplier" ng-change="calculateColorCon(); calculateTotal() " class="form-control" ng-model="quoteItem.colorConLetDown"></td>
+                             
+                            </tr>
+                            <tr>
+                                <td>Color Concentrate Cost</td>
+                                <td><input type="text" ng-disabled="!quoteItem.colorConLetDown"  ng-change="calculateColorCon() ; calculateTotal()" class="form-control" ng-model="quoteItem.colorConCost"></td>
+
+                            </tr>                    
+                    </tr>
+                    
+                    </tbody>
+                </table>       
+       
+        </div>
+        
+        <div class="col-md-4">  
+                <h4>Packaging</h4>
+                <table class="table table-condensed table-striped table-hover">
+                    <tbody>
+                        <tr>
+                            <td>Supplier</td>
+                            <td><select   ng-disabled="!quoteItem.mot"  ng-options="packager.name for packager in packSuppliers"  class="form-control" ng-model="quoteItem.packagingSupplier" >  </select></td>
+                        </tr>
+                        <tr>
+                            <td>Type</td>
+                            <td><select   ng-disabled="!quoteItem.packagingSupplier"  ng-change="calculatePackaging()" ng-options="packType.name for packType in packagingTypes"  class="form-control" ng-model="quoteItem.packagingType" >  </select></td>
+                        </tr>
+                        <tr>
+                            <td>Packing Cost</td>
+                            <td><input type="text"  ng-disabled="!quoteItem.packagingType" ng-change="calculatePackaging(); calculateTotal() " class="form-control" ng-model="quoteItem.packagingCost"></td>
+                         
+                        </tr>                    
+                    
+                    </tbody>
+                </table>         
+       
+        </div>   
+</div>      
+        <div class="col-md-12">
+             <h3> Item Calculation</h3>
+                <table class="table table-condensed table-striped table-hover">
+                    <tbody>
+                            <tr>
+                                <td>Supplier</td>
+                                <td><input type="text" ng-change="calculateTotal()" class="form-control" ng-model="quoteItem.supplier"></td>
+                            </tr>
+                                <td>Color Concentrate</td>
+                                <td><input readonly type="text"  class="form-control" ng-model="quoteItem.colorCon"></td> 
+                            <tr>
+                            <tr>
+                                <td>Transportation</td>
+                                 <td><input readonly type="text" class="form-control" ng-model="quoteItem.transportation"></td>
+                            </tr>
+                            <tr>
+                                <td>Packaging</td>
+                                 <td><input readonly type="text" ng-change="calculateTotal()" class="form-control" ng-model="quoteItem.packaging"></td>
+                            </tr>        
+                            <tr>
+                                <td>Warehouseing</td>
+                                <td><input type="text" ng-change="calculateTotal()" class="form-control" ng-model="quoteItem.warehousing"></td>
+                            </tr>
+                            <tr>
+                                <td>Toll Processing</td>
+                                 <td><input type="text" ng-change="calculateTotal()" class="form-control" ng-model="quoteItem.tollprocessing"></td>
+                            </tr>        
+                            <tr>
+                                <td>Rep Cost</td>
+                                <td><input type="text" ng-change="calculateTotal()" class="form-control" ng-model="quoteItem.repCost"></td>
+                            </tr>
+                            <tr>
+                                <td>Total</td>
+                                <td><input type="text" readonly class="form-control" ng-model="quoteItem.total"></td>
+                            </tr>   
+
+                    </tbody>
+
+                </table>
+            
+        </div>
+       
+       
+        
+
+
+ <div class="col-md-12">
+       
+  
+            <div class=row style="padding-top: 30px; padding-bottom: 10px;">
+                <div class="col-md-12" style="text-align:right;" >
+                    <button class="btn btn-lg" ng-click="newQuoteItemSave()"> Save </button> 
+                    <button class="btn btn-lg" ng-click="newQuoteItemCancel()"> Cancel </button>
+                </div>
+            </div>
+            
+        
+</div>        
+        
+        
+        
+
+</script>
+
+
+
